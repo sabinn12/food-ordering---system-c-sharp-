@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 namespace FoodOrderingSystem.Models
 {
     public class Food
@@ -7,5 +10,8 @@ namespace FoodOrderingSystem.Models
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        // Navigation property for orders
+        [JsonIgnore]
+        public List<Order>? Orders { get; set; }
     }
 }

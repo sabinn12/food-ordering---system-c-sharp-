@@ -8,5 +8,9 @@ namespace FoodOrderingSystem.Models
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+
+        // Navigation properties
+        public User? User { get; set; }
+        public Food? Food { get; set; }
     }
 }

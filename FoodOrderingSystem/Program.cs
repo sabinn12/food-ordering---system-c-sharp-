@@ -4,6 +4,7 @@ using FoodOrderingSystem.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +50,11 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddAuthorization();
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 
 // Configure DbContext for MySQL
@@ -62,7 +67,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register UserService
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<FoodService>();
-
+builder.Services.AddScoped<OrderService>();
 var app = builder.Build();
 
 // Enable routing
