@@ -142,5 +142,16 @@ public async Task<UserResponseDTO> GetUserById(int id)
 
     return user;
 }
+public async Task DeleteUser(int id)
+{
+    var user = await _context.Users.FindAsync(id);
+    if (user == null)
+    {
+        throw new Exception("User not found.");
+    }
+
+    _context.Users.Remove(user);
+    await _context.SaveChangesAsync();
+}
     }
 }

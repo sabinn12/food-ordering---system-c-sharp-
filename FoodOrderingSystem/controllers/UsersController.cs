@@ -73,5 +73,19 @@ public async Task<IActionResult> GetUserById(int id)
         return NotFound(new { message = ex.Message });
     }
 }
+[Authorize(Roles = "Admin")] // Only users with the "Admin" role can access this endpoint
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteUser(int id)
+{
+    try
+    {
+        await _userService.DeleteUser(id);
+        return Ok(new { message = "User deleted successfully!" });
+    }
+    catch (Exception ex)
+    {
+        return NotFound(new { message = ex.Message });
+    }
+}
     }
 }
