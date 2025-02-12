@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings["Key"] ?? throw new Exception("JWT Key is missing in configuration.");
@@ -49,15 +51,22 @@ builder.Services.AddAuthorization();
 // Add services to the container.
 builder.Services.AddControllers();
 
+
 // Configure DbContext for MySQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Database connection string is missing in configuration.");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+        options => options.EnableStringComparisonTranslations() // Enable string comparison translations
+    ));
 
 // Register UserService
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<FoodService>();
 
 var app = builder.Build();
+
+// Enable routing
+app.UseRouting();
 
 // Enable authentication and authorization
 app.UseAuthentication();
