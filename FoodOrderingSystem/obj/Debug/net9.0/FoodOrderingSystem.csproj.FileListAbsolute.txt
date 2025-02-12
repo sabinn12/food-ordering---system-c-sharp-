@@ -104,3 +104,12 @@
 /Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/obj/Debug/net9.0/FoodOrderingSystem.pdb
 /Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/obj/Debug/net9.0/FoodOrderingSystem.genruntimeconfig.cache
 /Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/obj/Debug/net9.0/ref/FoodOrderingSystem.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/BCrypt.Net-Next.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
