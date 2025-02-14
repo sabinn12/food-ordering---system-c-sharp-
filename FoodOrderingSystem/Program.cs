@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings["Key"] ?? throw new Exception("JWT Key is missing in configuration.");
-// Ensure the key is at least 32 bytes long
+
 if (jwtKey.Length < 32)
 {
     throw new Exception("JWT Key must be at least 32 characters long.");

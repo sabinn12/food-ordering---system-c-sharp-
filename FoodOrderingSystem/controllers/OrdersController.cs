@@ -90,5 +90,65 @@ public async Task<IActionResult> GetAllOrders()
         return BadRequest(new { message = ex.Message });
     }
 }
+[Authorize] // Only authenticated users can update orders
+[HttpPut("{id}")]
+public async Task<IActionResult> UpdateOrder(int id, UpdateOrderDTO updateOrderDTO)
+{
+    try
+    {
+         // Get the current user's ID from the JWT token
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim == null)
+                {
+                    return Unauthorized(new { message = "User ID not found in token." });
+                }
+        // Get the current user's ID from the JWT token
+        var userId = int.Parse(userIdClaim);
+
+       
+
+        var order = await _orderService.UpdateOrder(id, userId, updateOrderDTO);
+        return Ok(new 
+        { 
+            message = "Order updated successfully!", 
+            order = order 
+        });
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
+[Authorize] // Only authenticated users can delete orders
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteOrder(int id)
+{
+    try
+    {
+        // Get the current user's ID from the JWT token
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null)
+        {
+            return Unauthorized(new { message = "User ID not found in token." });
+        }
+
+        var userId = int.Parse(userIdClaim);
+
+        var result = await _orderService.DeleteOrder(id, userId);
+        if (result)
+        {
+            return Ok(new { message = "Order deleted successfully!" });
+        }
+        else
+        {
+            return BadRequest(new { message = "Failed to delete the order." });
+        }
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
+
     }
 }

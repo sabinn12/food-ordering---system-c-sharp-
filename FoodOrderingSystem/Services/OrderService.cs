@@ -57,5 +57,59 @@ public async Task<List<Order>> GetAllOrders()
         .Include(o => o.Food) // Include food details
         .ToListAsync();
 }
+public async Task<Order> UpdateOrder(int orderId, int userId, UpdateOrderDTO updateOrderDTO)
+{
+    var order = await _context.Orders
+        .FirstOrDefaultAsync(o => o.Id == orderId && o.UserId == userId);
+
+    if (order == null)
+    {
+        throw new Exception("Order not found or you do not have permission to update this order.");
+    }
+
+    if (updateOrderDTO.FoodId.HasValue)
+    {
+        var food = await _context.Foods.FindAsync(updateOrderDTO.FoodId.Value);
+        if (food == null)
+        {
+            throw new Exception("Food not found.");
+        }
+        order.FoodId = updateOrderDTO.FoodId.Value;
+    }
+
+    if (updateOrderDTO.Quantity.HasValue)
+    {
+        order.Quantity = updateOrderDTO.Quantity.Value;
+    }
+
+    // Fix variable name to avoid redeclaration conflict
+    var existingFood = await _context.Foods.FindAsync(order.FoodId);
+    if (existingFood == null)
+            {
+                throw new Exception("Food not found.");
+            }
+    order.TotalPrice = existingFood.Price * order.Quantity;
+
+    _context.Orders.Update(order);
+    await _context.SaveChangesAsync();
+
+    return order;
+}
+public async Task<bool> DeleteOrder(int orderId, int userId)
+{
+    var order = await _context.Orders
+        .FirstOrDefaultAsync(o => o.Id == orderId && o.UserId == userId);
+
+    if (order == null)
+    {
+        throw new Exception("Order not found or you do not have permission to delete this order.");
+    }
+
+    _context.Orders.Remove(order);
+    await _context.SaveChangesAsync();
+
+    return true;
+}
+
     }
 }
