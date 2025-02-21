@@ -18,23 +18,23 @@ namespace FoodOrderingSystem.Controllers
         }
 
         [Authorize(Roles = "Admin")] // Only admins can create food
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateFood(CreateFoodDTO createFoodDTO)
-        {
-            try
-            {
-                var food = await _foodService.CreateFood(createFoodDTO);
-                return Ok(new 
-                { 
-                    message = "Food created successfully!", 
-                    food = food 
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+[HttpPost("create")]
+public async Task<IActionResult> CreateFood([FromForm] CreateFoodDTO createFoodDTO)
+{
+    try
+    {
+        var food = await _foodService.CreateFood(createFoodDTO);
+        return Ok(new 
+        { 
+            message = "Food created successfully!", 
+            food = food 
+        });
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
         [HttpGet("all")]
 public async Task<IActionResult> GetAllFoods()
 {

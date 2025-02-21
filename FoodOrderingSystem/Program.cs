@@ -8,7 +8,10 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 
+// Register Cloudinary service
+builder.Services.AddScoped<CloudinaryService>();
 
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");

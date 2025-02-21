@@ -113,3 +113,5 @@
 /Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/CloudinaryDotNet.dll
+/Users/pro/Desktop/food-ordering---system-c-sharp-/FoodOrderingSystem/bin/Debug/net9.0/Newtonsoft.Json.dll

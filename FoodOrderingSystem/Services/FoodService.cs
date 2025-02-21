@@ -4,25 +4,36 @@ using FoodOrderingSystem.Models;
 using FoodOrderingSystem.Data;
 using FoodOrderingSystem.DTOs;
 using Microsoft.EntityFrameworkCore;
+using CloudinaryDotNet.Actions;
 
 namespace FoodOrderingSystem.Services
 {
     public class FoodService
     {
         private readonly AppDbContext _context;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public FoodService(AppDbContext context)
+        public FoodService(AppDbContext context, CloudinaryService cloudinaryService)
         {
             _context = context;
+            _cloudinaryService = cloudinaryService;
         }
 
         public async Task<Food> CreateFood(CreateFoodDTO createFoodDTO)
         {
+            string? imageUrl = null;
+            if (createFoodDTO.Image != null)
+            {
+                var uploadResult = await _cloudinaryService.UploadImageAsync(createFoodDTO.Image);
+                imageUrl = uploadResult.SecureUrl.ToString();
+            }
+
             var food = new Food
             {
                 Name = createFoodDTO.Name,
                 Description = createFoodDTO.Description,
                 Price = createFoodDTO.Price,
+                ImageUrl = imageUrl,
                 CreatedAt = DateTime.UtcNow
             };
 
