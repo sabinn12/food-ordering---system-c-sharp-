@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Allow requests from this origin
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -88,6 +88,9 @@ var app = builder.Build();
 
 // Enable routing
 app.UseRouting();
+// Use CORS policy
+app.UseCors("AllowFrontend");
+
 
 // Enable authentication and authorization
 app.UseAuthentication();

@@ -30,19 +30,19 @@ namespace FoodOrderingSystem.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-       [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginUserDTO loginUserDTO)
-        {
-            try
-            {
-                var token = await _userService.LoginUser(loginUserDTO);
-                return Ok(new { message = "User logged in successfully!", token, role= loginUserDTO.Role, email = loginUserDTO.Email});
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+      [HttpPost("login")]
+public async Task<IActionResult> Login(LoginUserDTO loginUserDTO)
+{
+    try
+    {
+        var (token, role, email) = await _userService.LoginUser(loginUserDTO);
+        return Ok(new { message = "User logged in successfully!", token, role, email });
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
         [Authorize(Roles = "Admin")] // Only users with the "Admin" role can access this endpoint
 [HttpGet("all")]
 public async Task<IActionResult> GetAllUsers()

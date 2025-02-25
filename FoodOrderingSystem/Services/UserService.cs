@@ -70,45 +70,45 @@ namespace FoodOrderingSystem.Services
             return user;
         }
 
-        public async Task<string> LoginUser(LoginUserDTO loginUserDTO)
+        public async Task<(string token, string role, string email)> LoginUser(LoginUserDTO loginUserDTO)
+{
+    if (loginUserDTO == null)
+    {
+        throw new ArgumentNullException(nameof(loginUserDTO));
+    }
+
+    // Find the user by email
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginUserDTO.Email);
+    if (user == null)
+    {
+        throw new Exception("User not found.");
+    }
+
+    // Verify the password
+    if (user.PasswordHash == null || !BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.PasswordHash))
+    {
+        throw new Exception("Invalid password.");
+    }
+
+    // Generate JWT token
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"] ?? throw new Exception("JWT Key is missing in configuration."));
+    var tokenDescriptor = new SecurityTokenDescriptor
+    {
+        Subject = new ClaimsIdentity(new[]
         {
-            if (loginUserDTO == null)
-            {
-                throw new ArgumentNullException(nameof(loginUserDTO));
-            }
-
-            // Find the user by email
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginUserDTO.Email);
-            if (user == null)
-            {
-                throw new Exception("User not found.");
-            }
-
-            // Verify the password
-            if (user.PasswordHash == null || !BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.PasswordHash))
-            {
-                throw new Exception("Invalid password.");
-            }
-
-            // Generate JWT token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"] ?? throw new Exception("JWT Key is missing in configuration."));
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email ?? throw new Exception("User email is null.")),
-                    new Claim(ClaimTypes.Role, user.Role ?? throw new Exception("User role is null."))
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpiryInMinutes"] ?? throw new Exception("JWT ExpiryInMinutes is missing in configuration."))),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"]
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email ?? throw new Exception("User email is null.")),
+            new Claim(ClaimTypes.Role, user.Role ?? throw new Exception("User role is null."))
+        }),
+        Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpiryInMinutes"] ?? throw new Exception("JWT ExpiryInMinutes is missing in configuration."))),
+        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+        Issuer = _configuration["Jwt:Issuer"],
+        Audience = _configuration["Jwt:Audience"]
+    };
+    var token = tokenHandler.CreateToken(tokenDescriptor);
+    return (tokenHandler.WriteToken(token), user.Role, user.Email);
+}
        public async Task<List<UserResponseDTO>> GetAllUsers()
 {
     return await _context.Users

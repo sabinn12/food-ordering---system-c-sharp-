@@ -80,6 +80,10 @@ public async Task<Food> UpdateFood(int id, UpdateFoodDTO updateFoodDTO)
     {
         food.Price = updateFoodDTO.Price.Value;
     }
+    if (updateFoodDTO.ImageUrl != null) 
+    {
+        food.ImageUrl = updateFoodDTO.ImageUrl;
+    }
 
     _context.Foods.Update(food);
     await _context.SaveChangesAsync();
